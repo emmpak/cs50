@@ -5,6 +5,7 @@
 
 void validate_input(int argc, string argv[]);
 int format_number(string str);
+char shift(char c, int input);
 
 int main(int argc, string argv[])
 {
@@ -14,15 +15,21 @@ int main(int argc, string argv[])
 
     for (int i = 0, n = strlen(plain); i < n; i++)
     {
-        if (!isalpha(plain[i])) continue;
-        int char_num = (int) plain[i];
-        int offset = isupper(char_num) ? 65 : 97;
-        int ciph = (char_num - offset + input) % 26;
-
-        plain[i] = ciph + offset;
+        if (!isalpha(plain[i]))
+            continue;
+        else
+            plain[i] = shift(plain[i], input);
     }
     printf("ciphertext: %s\n", plain);
     return 0;
+}
+
+// shifts character by the specified key/input
+char shift(char c, int input)
+{
+  int char_num = (int) c;
+  int offset = isupper(char_num) ? 65 : 97;
+  return (char_num - offset + input) % 26 + offset;
 }
 
 // converts a string number to an integer
