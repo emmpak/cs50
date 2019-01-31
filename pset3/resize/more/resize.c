@@ -1,25 +1,66 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
-void argument_count(int count);
-void validate_inputs(int count, char *inputs[]);
+int is_valid_argument_count(int count);
+int is_numeric(char *num);
+int is_valid_number(float n);
+int validate_inputs(int count, char *inputs[]);
 
 int main(int argc, char *argv[])
 {
-    validate_inputs(argc, argv);
-
+    return validate_inputs(argc, argv);
 }
 
-void validate_inputs(int count, char *inputs[])
+// validates the inputs
+int validate_inputs(int count, char *inputs[])
 {
-    argument_count(count);
+    int check = 0;
+    check = is_valid_argument_count(count);
+    check = is_numeric(inputs[1]);
+
+    if (check)
+    {
+        float num = atoi(inputs[1]);
+        check = is_valid_number(num);
+    }
+    printf("%i", check);
+    return check;
 }
 
-void argument_count(int count)
+// verifies the number of arguments
+int is_valid_argument_count(int count)
 {
     if (count != 4)
     {
         printf("Please provide exactly 3 arguments.\n");
-        exit(1);
+        return 0;
     }
+    return 1;
+}
+
+// verifies that the first argument is a number
+int is_numeric(char *num)
+{
+    for (int i = 0, n = strlen(num); i < n; i++)
+    {
+        if (!isdigit(num[i]))
+        {
+            printf("Please provide a number between 0 and 100 as the first argument.\n");
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// verifies that the first argument is a float b/n 0 and 100
+int is_valid_number(float n)
+{
+    if (n < 0 || n > 100)
+    {
+        printf("Please provide a number between 0 and 100 as the first argument.\n");
+        return 0;
+    }
+    return 1;
 }
